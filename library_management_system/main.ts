@@ -12,6 +12,10 @@ class Book {
         this.id = Math.floor(Math.random() * 1000);
     }
 
+    getId(): number {
+        return this.id;
+    }
+
     isAvailable(): boolean {
         console.log(`${this.title} is ${this.available ? 'available' : 'not available'}`);
         return this.available
@@ -54,7 +58,15 @@ class Library {
         return this.books
     }
 
-    borrowBook() { }
+    borrowBook(bookId: number): Book | null {
+        const book = this.books.find((book) => book.getId() === bookId);
+        if (book && book.isAvailable()) {
+            book.borrow()
+            return book
+        } else {
+            return null
+        }
+    }
 }
 
 
