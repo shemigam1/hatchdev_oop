@@ -12,6 +12,32 @@ class Book {
         this.id = Math.floor(Math.random() * 1000);
     }
 
+    isAvailable(): boolean {
+        console.log(`${this.title} is ${this.available ? 'available' : 'not available'}`);
+        return this.available
+    }
+
+    borrow(): boolean {
+        if (this.available) {
+            this.available = false
+            console.log(`${this.title} borrowed sucessfully`);
+
+            return true
+        }
+        console.log(`${this.title} not available! try again later.`);
+        return false
+    }
+
+    returnBook(): void {
+        if (!this.available) {
+            this.available = true
+            console.log(`${this.title} returned sucessfully`);
+        } else {
+            console.log(`Error: ${this.title} already returned`);
+        }
+
+    }
+
 }
 
 class Library {
@@ -19,6 +45,16 @@ class Library {
     constructor() {
         this.books = [];
     }
+
+    addBook(book: Book): void {
+        this.books.push(book)
+    }
+
+    listBooks(): Book[] {
+        return this.books
+    }
+
+    borrowBook() { }
 }
 
 
@@ -36,12 +72,26 @@ class User {
         this.email = email;
     }
 
+    viewBooks() { }
+
+    borrowBook() { }
+
 }
 class Admin extends User {
+    private books: Book[];
     public admin: boolean;
     constructor(name: string, email: string, role: boolean) {
         super(name, email);
         this.admin = true;
+    }
+
+    createBook(bookData: newBook) {
+        return new Book(bookData.title, bookData.author);
+    }
+
+    addToLibrary(library: Library, bookData: newBook) {
+        const book = this.createBook(bookData);
+        library.addBook(book);
     }
 
 }
