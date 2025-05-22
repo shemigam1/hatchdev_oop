@@ -19,15 +19,15 @@ class Task {
     }
 
     toggleDone() {
-        this.done = !this.done;
+        return this.done = !this.done;
     }
 
     updateTitle(title: string) {
-        this.title = title
+        return this.title = title
     }
 
     updateDescription(description: string) {
-        this.description = description
+        return this.description = description
     }
 }
 
@@ -45,26 +45,31 @@ class TaskManager {
     }
 
     updateTask(newTitle: string, newDescription: string, id: number) {
-        const task = this.tasks.find(task => task.getId() === id)
-        if (task) {
-            if (newTitle === "" && newDescription === "") {
-                console.log(`Error: title and description cannot be blank`);
-                return null
-            }
-            if (newTitle !== "") {
-                task.updateTitle(newTitle)
-            }
-            if (newDescription !== "") {
-                task.updateDescription(newDescription)
-            }
+        const task = this.tasks.find(task => task.getId() === id);
+        if (!task) {
+            console.log(`Error: Task with id ${id} not found`);
+            return null;
         }
 
-        const updatedTask = this.tasks.find(task => task.getId() === id)
-        console.log(updatedTask);
+        if (newTitle === "" && newDescription === "") {
+            console.log(`Error: title and description cannot be blank`);
+            return null;
+        }
 
-        console.log(`task updated sucessfully`);
+        if (newTitle !== "") {
+            task.updateTitle(newTitle);
+            console.log(`Title updated to: ${task.title}`);
+        }
+
+        if (newDescription !== "") {
+            task.updateDescription(newDescription);
+            console.log(`Description updated to: ${task.description}`);
+        }
+
+        console.log(`Task after update:`, task);
+
+        console.log(`Task updated successfully`);
     }
-
     viewTasks() {
         console.log(this.tasks);
 
@@ -93,3 +98,5 @@ class TaskManager {
         }
     }
 }
+
+export { Task, TaskManager }
